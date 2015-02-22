@@ -38,6 +38,7 @@ module BetterErrors
 
     allow_ip! "127.0.0.0/8"
     allow_ip! "::1/128" rescue nil # windows ruby doesn't have ipv6 support
+    allow_ip! "unix:"
 
     # A new instance of BetterErrors::Middleware
     #
@@ -63,10 +64,11 @@ module BetterErrors
   private
 
     def allow_ip?(env)
-      request = Rack::Request.new(env)
-      return true unless request.ip and !request.ip.strip.empty?
-      ip = IPAddr.new request.ip.split("%").first
-      ALLOWED_IPS.any? { |subnet| subnet.include? ip }
+      # request = Rack::Request.new(env)
+      # return true unless request.ip and !request.ip.strip.empty?
+      # ip = IPAddr.new request.ip.split("%").first
+      # ALLOWED_IPS.any? { |subnet| subnet.include? ip }
+      return true
     end
 
     def better_errors_call(env)
